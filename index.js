@@ -3,8 +3,13 @@ const TelegramBot = require('node-telegram-bot-api');
 // Ваш токен, выданный BotFather
 const token = process.env.TELEGRAM_BOT_TOKEN;
 
+if (!token) {
+  console.error("Токен бота не найден. Убедитесь, что TELEGRAM_BOT_TOKEN задан в переменных окружения.");
+  process.exit(1); // Завершаем процесс, если токен отсутствует
+}
+
 // ID или @username канала/группы
-const channelId = '@your_channel_or_group';
+const channelId = '@HN5a1pFLllU1ZDYy';
 
 // Создаем экземпляр бота
 const bot = new TelegramBot(token, { polling: true });
