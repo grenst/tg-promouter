@@ -1,7 +1,7 @@
 const TelegramBot = require('node-telegram-bot-api');
 
 // Ваш токен, выданный BotFather
-const token = 'YOUR_TELEGRAM_BOT_TOKEN';
+const token = process.env.TELEGRAM_BOT_TOKEN;
 
 // ID или @username канала/группы
 const channelId = '@your_channel_or_group';
