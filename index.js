@@ -1,24 +1,21 @@
 const express = require('express');
 const TelegramBot = require('node-telegram-bot-api');
 
-// Настраиваем HTTP-сервер
+
 const app = express();
-const PORT = process.env.PORT || 3000; // Render требует, чтобы приложение слушало порт
+const PORT = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
   res.send('Telegram bot is running!');
 });
 
-// Запускаем сервер
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-// Ваш токен, выданный BotFather
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const bot = new TelegramBot(token, { polling: true });
 
-// Ваш код бота
 bot.on('message', (msg) => {
   const chatId = msg.chat.id;
   bot.sendMessage(chatId, 'Привет! Я работаю через Render!');
