@@ -27,7 +27,7 @@ if (!token) {
 }
 
 // ID или @username канала/группы
-const channelId = '@ami_invite_chat';
+const channelId = '@test_rigoletto';
 
 // Функция для проверки срока подписки
 function isSubscribedOverYear(joinedDateTimestamp) {
