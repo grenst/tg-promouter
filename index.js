@@ -1,10 +1,10 @@
 const express = require('express');
 const TelegramBot = require('node-telegram-bot-api');
 
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Уведомление, что сервер работает
 app.get('/', (req, res) => {
   res.send('Telegram bot is running!');
 });
@@ -13,21 +13,12 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
+// Ваш токен бота из переменной окружения
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const bot = new TelegramBot(token, { polling: true });
 
-bot.on('message', (msg) => {
-  const chatId = msg.chat.id;
-  bot.sendMessage(chatId, 'Привет! Я работаю через Render!');
-});
-
-if (!token) {
-  console.error("Токен бота не найден. Убедитесь, что TELEGRAM_BOT_TOKEN задан в переменных окружения.");
-  process.exit(1); // Завершаем процесс, если токен отсутствует
-}
-
-// ID или @username канала/группы
-const channelId = '@test_rigoletto';
+// ID закрытой группы
+const groupId = -1002490477834;
 
 // Функция для проверки срока подписки
 function isSubscribedOverYear(joinedDateTimestamp) {
@@ -37,14 +28,19 @@ function isSubscribedOverYear(joinedDateTimestamp) {
   return joinedDate < oneYearAgo;
 }
 
-// Слушаем сообщения
+// Слушаем сообщения в группе
 bot.on('message', async (msg) => {
   const moderatorBotUsername = 'Rose'; // Имя модераторского бота
   const text = msg.text || '';
   const chatId = msg.chat.id;
 
+  // Проверяем, что сообщение из нужной группы
+  if (chatId !== groupId) return;
+
   // Проверяем, что сообщение пришло от модераторского бота
   if (msg.from && msg.from.username === moderatorBotUsername) {
+    console.log(`Сообщение от модератора ${moderatorBotUsername}:`, text);
+
     // Ищем упоминания пользователей в тексте сообщения
     const mentionRegex = /@(\w+)/g;
     const mentions = [...text.matchAll(mentionRegex)];
@@ -54,7 +50,7 @@ bot.on('message', async (msg) => {
 
       try {
         // Получаем информацию о пользователе в группе
-        const chatMember = await bot.getChatMember(channelId, username);
+        const chatMember = await bot.getChatMember(groupId, username);
 
         // Проверяем дату подписки
         const joinedDateTimestamp = chatMember.joined_date || 0;
