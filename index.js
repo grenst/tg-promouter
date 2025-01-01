@@ -9,7 +9,7 @@ if (!token) {
 }
 
 // ID или @username канала/группы
-const channelId = '@HN5a1pFLllU1ZDYy';
+const channelId = '@ami_invite_chat';
 
 // Создаем экземпляр бота
 const bot = new TelegramBot(token, { polling: true });
